@@ -1,0 +1,3 @@
+# wired-crawler gitignore
+
+__pycache__/

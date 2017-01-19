@@ -16,6 +16,8 @@ except ImportError:
 
 class WiredScraper:
 
+    none_count = 0
+
     def __init__(self, target_url, save_dir):
         self.target_url = target_url
         self.save_dir = save_dir
@@ -71,7 +73,8 @@ class WiredScraper:
         try:
             title = h1_post_title.get_text()
         except AttributeError:
-            title = None
+            title = self.none_count
+            self.none_count += 1
 
         print("[ DEBUG ] Title: {}".format(title))
         article_dict["title"] = title

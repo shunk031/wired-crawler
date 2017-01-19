@@ -68,13 +68,21 @@ class WiredScraper:
 
         detail_soup = self._make_soup(article_url)
         h1_post_title = detail_soup.find("h1", {"class": "post-title"})
-        title = h1_post_title.get_text()
+        try:
+            title = h1_post_title.get_text()
+        except AttributeError:
+            title = None
+
         print("[ DEBUG ] Title: {}".format(title))
         article_dict["title"] = title
 
-        article_content = detail_soup.find("article", {"class": "content"})
-        article_dict["article"] = article_content.get_text()
+        try:
+            article_content = detail_soup.find("article", {"class": "content"})
+            article_content = article_content.get_text()
+        except AttributeError:
+            article_content = None
 
+        article_dict["article"] = article_content
         return article_dict
 
     def save_article_detail_info_list(self, article_detail_info_list):

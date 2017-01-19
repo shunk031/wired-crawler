@@ -54,6 +54,7 @@ class WiredCrawler:
     def crawl(self):
 
         while True:
+            start = time.time()
             print("[ DEBUG ] Now page {} PROCESSING".format(self.page_count))
             scraper = WiredScraper(self.target_url, self.save_dir)
             scraper.scrap()
@@ -64,5 +65,8 @@ class WiredCrawler:
 
             self.page_count += 1
             time.sleep(2)
+
+            end = time.time()
+            print("[ DEBUG ] Elapsed time: {:.2f} [min]".format((end - start) / 60))
 
         return self.FINISH_CRAWL

@@ -41,7 +41,7 @@ class WiredScraper:
                     raise Exception("Too many retries.")
 
                 wait = 2 ** (retries - 1)
-                print("[ RETRY ] Waiting {} seconds...".format(wai))
+                print("[ RETRY ] Waiting {} seconds...".format(wait))
                 time.sleep(wait)
 
     def scrap(self):

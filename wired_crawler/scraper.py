@@ -97,7 +97,8 @@ class WiredScraper:
         try:
             article_content = detail_soup.find("article", {"class": "content"})
             article_content = article_content.get_text()
-        except AttributeError:
+        except AttributeError as err:
+            traceback.print_tb(err.__traceback__)
             article_content = None
 
         article_dict["article"] = article_content
@@ -123,4 +124,8 @@ class WiredScraper:
 
         filename = article_title.replace(" ", "_")
         filename = filename.replace("/", "")
+        filename = filename.replace("?", "")
+
+        if len(filename) > 250:
+            filename = filename[:250]
         return filename

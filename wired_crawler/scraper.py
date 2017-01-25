@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 import os
 import csv
+import traceback
 
 try:
     from urllib.request import urlopen
@@ -70,7 +71,7 @@ class WiredScraper:
         for li_article in li_articles:
             a_pad = li_article.find("a", {"class": "clearfix"})
             url = a_pad["href"]
-            print("[ DEBUG ] Get URL: {}".format(url))
+            print("[ GET ] Get URL: {}".format(url))
             article_detail_url_list.append(url)
 
         return article_detail_url_list
@@ -82,12 +83,15 @@ class WiredScraper:
         detail_soup = self._make_soup(article_url)
         h1_post_title = detail_soup.find("h1", {"class": "post-title"})
         try:
-            title = h1_post_title.get_text()
-        except AttributeError:
+            title = h1_post_title.get_text().strip()
+
+        except AttributeError as err:
+            traceback.print_tb(err.__traceback__)
+
             title = str(self.none_count)
             self.none_count += 1
 
-        print("[ DEBUG ] Title: {}".format(title))
+        print("[ GET ] Title: {}".format(title))
         article_dict["title"] = title
 
         try:

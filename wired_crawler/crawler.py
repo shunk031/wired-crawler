@@ -5,6 +5,8 @@ from wired_crawler.scraper import WiredScraper
 from bs4 import BeautifulSoup
 
 import time
+import traceback
+import json
 
 try:
     from urllib.request import urlopen
@@ -16,24 +18,35 @@ except ImportError:
 
 class WiredCrawler:
 
-    page_count = 1
     FINISH_CRAWL = "Finish crawl!"
 
-    def __init__(self, target_url, save_dir="./data"):
+    def __init__(self, target_url, save_dir="./data", page_count=1):
         self.target_url = target_url
         self.before_url = None
         self.save_dir = save_dir
+        self.page_count = page_count
 
     def _make_soup(self, url):
-        try:
-            with urlopen(url) as response:
-                html = response.read()
 
-            return BeautifulSoup(html, "lxml")
+        max_retries = 3
+        retries = 0
 
-        except HTTPError as e:
-            print("[ DEBUG ] in WiredCrawler#make_soup: {}".format(e))
-            return None
+        while True:
+            try:
+                with urlopen(url) as res:
+                    html = res.read()
+                return BeautifulSoup(html, "lxml")
+
+            except HTTPError as err:
+                print("[ EXCEPTION ] in {}#make_soup: {}".format(self.__class__.__name__, err))
+
+                retries += 1
+                if retries >= max_retries:
+                    raise Exception("Too many retries.")
+
+                wait = 2 ** (retries - 1)
+                print("[ RETRY ] Waiting {} seconds...".format(wai))
+                time.sleep(wait)
 
     def get_next_page_link(self, url):
 

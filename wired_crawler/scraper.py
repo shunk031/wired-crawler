@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import os
 import csv
 import traceback
+import time
 
 try:
     from urllib.request import urlopen

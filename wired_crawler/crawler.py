@@ -82,7 +82,7 @@ class WiredCrawler:
                 end = time.time()
 
                 elapsed_sec = end - start
-                elapsed_min = elapsed_min / 60
+                elapsed_min = elapsed_sec / 60
 
                 if elapsed_min < 1:
                     print("[ TIME ] Elapsed time: {:.2f} [sec]".format(elapsed_sec))
